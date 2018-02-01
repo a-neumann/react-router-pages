@@ -9,7 +9,7 @@ import Todo from "./models/Todo";
 
 const app = express();
 
-const template = (rendered, initialData) => {
+const template = (rendered, initialDataJson) => {
     return `<!doctype html>
     <html>
         <head>
@@ -19,7 +19,7 @@ const template = (rendered, initialData) => {
                 header { background: teal; }
             </style>
             <script id="initialData" type="application/json">
-                ${initialData}
+                ${initialDataJson}
             </script>
             <script src="/public/manifest.js"></script>
             <script defer src="/public/vendor.js"></script>
@@ -69,8 +69,7 @@ app.get("/*", (req: express.Request, res: express.Response, next: express.NextFu
         renderSSR(routes, req.url).then(ssr => {
 
             const ssrHtml = renderToString(ssr.jsx);
-            const initialData = JSON.stringify(ssr.initialData);
-            const html = template(ssrHtml, initialData);
+            const html = template(ssrHtml, ssr.initialDataJson);
 
             if (ssr.redirectUrl) {
                 res.redirect(ssr.status, ssr.redirectUrl);

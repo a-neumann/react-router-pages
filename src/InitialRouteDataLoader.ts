@@ -1,7 +1,6 @@
 import { ComponentClass } from "react";
 import { match, matchPath } from "react-router";
 import IRouteConfig from "./IRouteConfig";
-import IPageData from "./IPageData";
 
 export interface IRouteConfigMatch {
     component: ComponentClass;
@@ -19,14 +18,16 @@ export default class InitialRouteDataLoader {
         this.addAutoIds();
     }
     
-    async loadData(pathname: string): Promise<Array<IPageData>> {
+    async loadData(pathname: string): Promise<Map<string, any>> {
+
+        const allData = new Map<string, any>();
 
         const matchedRoutes = this.matchRoutes(pathname);
-        const promises = matchedRoutes.map(matchingRoute => this.loadDataForRoute(matchingRoute));
+        const promises = matchedRoutes.map(matchingRoute => this.loadDataForRoute(matchingRoute, allData));
     
-        const allData = await Promise.all(promises);
+        await Promise.all(promises);
     
-        return allData.filter(d => d.data);
+        return allData;
     }
 
     addAutoIds() {
@@ -92,22 +93,20 @@ export default class InitialRouteDataLoader {
         };
     }
 
-    private loadDataForRoute = async (route: IRouteConfigMatch): Promise<IPageData> => {
+    private async loadDataForRoute(route: IRouteConfigMatch, into: Map<string, any>): Promise<void> {
 
         const loadData: (match: match<any>) => Promise<any> = (route.component as any).loadData;
         if (loadData) {
-    
-            return loadData(route.match).then(data => {
-                return {
-                    id: route.id,
-                    data
-                };
-            });
+
+            try {
+                const result = await loadData(route.match);
+                into.set(route.id, result);
+
+            } catch (error) {
+
+                const idName = route.id || "[no id]";
+                console.error(`Could not load data for route "${idName}" matching URL "${route.match.url}".`);
+            }
         }
-    
-        return {
-            id: route.id,
-            data: null
-        };
     }
 }

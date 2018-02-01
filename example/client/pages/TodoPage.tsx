@@ -14,7 +14,7 @@ interface ITodoPageData {
     todo: Todo;
 }
 
-export default class TodoPage extends Page<ITodoPageParams, ITodoPageData> {
+export default class TodoPage extends Page<ITodoPageData, ITodoPageParams> {
 
     static async loadData(match: match<ITodoPageParams>): Promise<ITodoPageData> {
 
@@ -30,7 +30,7 @@ export default class TodoPage extends Page<ITodoPageParams, ITodoPageData> {
 
     render() {
 
-        const todo = this.data ? this.data.todo : null;
+        const todo = this.props.data ? this.props.data.todo : null;
 
         return todo && (
             <section>
