@@ -26,7 +26,8 @@ interface IPageRouterState {
 class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRouterState> {
 
     static childContextTypes = {
-        pagesData: PropTypes.any
+        pagesData: PropTypes.object,
+        isNavigating: PropTypes.bool
     }
 
     private pagesDataLoader: IPagesDataLoader;
@@ -45,7 +46,8 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
     getChildContext() {
 
         return {
-            pagesData: this.state.pagesData
+            pagesData: this.state.pagesData,
+            isNavigating: !!this.state.previousLocation
         };
     }
 

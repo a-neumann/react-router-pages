@@ -15,8 +15,9 @@ const template = (rendered, initialDataJson) => {
         <head>
             <meta charset="UTF-8" />
             <style>
-                section { border: 1px solid black; margin: 10px; }
+                section { border: 1px solid black; margin: 10px; position: relative }
                 header { background: teal; }
+                .loadingOverlay { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.3) }
             </style>
             <script id="initialData" type="application/json">
                 ${initialDataJson}
@@ -43,22 +44,25 @@ const todos = [
 
 app.get("/api/todos", (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    const json = JSON.stringify(classToPlain(todos));
-
-    res.send(json);
+    setTimeout(() => {
+        const json = JSON.stringify(classToPlain(todos));
+        res.send(json);
+    }, 2000);
 });
 
 app.get("/api/todos/:id", (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    const todo = todos.find(t => t.id === Number(req.params.id));
+    setTimeout(() => {
+        const todo = todos.find(t => t.id === Number(req.params.id));
 
-    if (!todo) {
-        res.status(404);
-
-    } else {
-        const json = JSON.stringify(classToPlain(todo));
-        res.send(json);
-    }
+        if (!todo) {
+            res.status(404);
+    
+        } else {
+            const json = JSON.stringify(classToPlain(todo));
+            res.send(json);
+        }
+    }, 1500);
 });
 
 app.get("/*", (req: express.Request, res: express.Response, next: express.NextFunction) => {

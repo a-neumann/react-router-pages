@@ -28,6 +28,7 @@ export default class RootPage extends Page<IRootPageData> {
 
         return (
             <section>
+                {this.props.isNavigating && (<div className="loadingOverlay">Loading</div>)}
                 <header>Root Page</header>
                 <nav>
                     <Link to="/">Home</Link>

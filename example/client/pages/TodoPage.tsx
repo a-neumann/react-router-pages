@@ -34,6 +34,7 @@ export default class TodoPage extends Page<ITodoPageData, ITodoPageParams> {
 
         return todo && (
             <section>
+                {this.props.isNavigating && (<div className="loadingOverlay">Loading</div>)}
                 <header>Todo Page</header>
                 <nav>
                     <Link to={`/todos/${todo.id}/edit`}>edit</Link>

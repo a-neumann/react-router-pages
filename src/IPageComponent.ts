@@ -6,6 +6,7 @@ export interface IPageComponentProps<TPageData, TParams> extends RouteProps {
     data: TPageData;
     params: TParams;
     route: IRouteConfig;
+    isNavigating?: boolean;
 }
 
 export default interface IPageComponent<TPageData = any, TParams = any>
