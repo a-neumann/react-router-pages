@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Current TS File",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
+            "args": ["${relativeFile}"],
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector"
+        },
+        {
+            "name": "Example:Node",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
+            "args": ["example/index.ts"],
+            "cwd": "${workspaceRoot}",
+            "protocol": "inspector"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Example:Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/example/public",
+            "preLaunchTask": "npm: build-example"
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "name": "Example:Firefox",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/example/public",
+            "preLaunchTask": "npm: build-example"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Example",
+            "configurations": ["Example:Node", "Example:Chrome"]
+        }
+    ]
+}
