@@ -22,7 +22,7 @@ const initReact = (jsx: JSX.Element, rootElement: Element): Promise<void> => {
 document.addEventListener("DOMContentLoaded", () => {
 
     const initialDataScript = document.getElementById("initialData");
-    const initialData = initialDataScript ? JSON.parse(initialDataScript.innerHTML) : null;
+    const initialData = initialDataScript ? initialDataScript.innerHTML : null;
 
     const jsx = renderClient(routes, initialData);
 

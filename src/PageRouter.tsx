@@ -1,9 +1,8 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { renderRoutes } from "react-router-config";
 import { Route, RouteProps, withRouter } from "react-router";
+import ChildRoutes from "./ChildRoutes";
 import IRouteConfig from "./IRouteConfig";
-import IPageData from "./IPageData";
 import IPagesDataLoader from "./InitialRouteDataLoader";
 
 type RouterLocation = RouteProps["location"];
@@ -15,13 +14,13 @@ interface IPageRouterServerRenderInfo {
 
 interface IPageRouterProps {
     routes: Array<IRouteConfig>;
-    initialData?: Array<IPageData>;
+    initialData?: Map<string, any>;
     serverRenderInfo?: IPageRouterServerRenderInfo;
 }
 
 interface IPageRouterState {
     previousLocation: RouterLocation;
-    pagesData: Array<IPageData>;
+    pagesData: Map<string, any>;
 }
 
 class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRouterState> {
@@ -66,7 +65,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         return (
             <Route
                 location={previousLocation || location}
-                render={() => renderRoutes(routes)}
+                render={() => <ChildRoutes routes={routes} />}
             />
         )
     }

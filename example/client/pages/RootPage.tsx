@@ -10,7 +10,7 @@ interface IRootPageData {
     todos: Array<Todo>;
 }
 
-export default class RootPage extends Page<null, IRootPageData> {
+export default class RootPage extends Page<IRootPageData> {
 
     static async loadData(match: match<any>): Promise<IRootPageData> {
 
@@ -34,7 +34,7 @@ export default class RootPage extends Page<null, IRootPageData> {
                     <br />
                     <Link to="/help">Help</Link>
                     <br />
-                    {this.data && this.data.todos.map(todo =>
+                    {this.props.data && this.props.data.todos.map(todo =>
                         <div key={todo.id}><Link to={"/todos/" + todo.id}>{todo.name}</Link><br /></div>
                     )}
                 </nav>

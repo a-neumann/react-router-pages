@@ -1,10 +1,13 @@
 import * as React from "react";
 import { BrowserRouter } from "react-router-dom";
-import IPageData from "./IPageData";
 import IRouteConfig from "./IRouteConfig";
 import PageRouter from "./PageRouter";
 
-export default (routes: Array<IRouteConfig>, initialData: Array<IPageData>) => {
+export default (routes: Array<IRouteConfig>, initialDataJson?: string) => {
+
+    const initialData = initialDataJson ?
+        new Map<string, any>(JSON.parse(initialDataJson)) :
+        null;
 
     return (
         <BrowserRouter>

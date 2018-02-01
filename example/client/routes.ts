@@ -1,3 +1,4 @@
+import IRouteConfig from "../../src/IRouteConfig";
 import RootPage from "./pages/RootPage";
 import HomePage from "./pages/HomePage";
 import TodoPage from "./pages/TodoPage";
@@ -24,28 +25,9 @@ export default [
                 ]
             },
             {
-                path: "/pollos/:id",
-                component: TodoPage,
-                routes: [
-                    {
-                        path: "/pollos/:id/edit",
-                        component: TodoEditPage
-                    },
-                    {
-                        path: "/pollos/:id/delete",
-                        component: TodoEditPage,
-                        routes: [
-                            {
-                                component: TodoEditPage
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
                 path: "/help",
                 component: HelpPage
             }
         ]
     }
-];
+] as Array<IRouteConfig>;

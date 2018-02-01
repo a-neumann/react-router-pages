@@ -1,7 +1,7 @@
-import { ComponentClass } from "react";
+import IPageComponent from "./IPageComponent";
 
 export default interface IRouteConfig {
-    component: ComponentClass;
+    component: IPageComponent;
     path?: string;
     exact?: boolean;
     strict?: boolean;

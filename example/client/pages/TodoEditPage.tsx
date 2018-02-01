@@ -6,16 +6,19 @@ interface ITodoEditPageParams {
     id: string;
 }
 
-export default class TodoPage extends Page<ITodoEditPageParams> {
+export default class TodoPage extends Page<null, ITodoEditPageParams> {
 
     render() {
+
+        const params = this.props.params;
+
         return (
             <section>
                 <header>Edit Todo Page</header>
                 <nav>
-                    <Link to={`/todos/${this.params.id}`}>back</Link>
+                    <Link to={`/todos/${params.id}`}>back</Link>
                 </nav>
-                <p>Edit Todo {this.params.id}</p>
+                <p>Edit Todo {params.id}</p>
             </section>
         );
     }

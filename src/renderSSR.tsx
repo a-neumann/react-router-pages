@@ -13,7 +13,7 @@ export interface IRouteContext {
 export interface IPageRouterRenderResult {
     jsx: JSX.Element;
     status: number;
-    initialData: Array<any>;
+    initialDataJson: string;
     redirectUrl?: string;
 }
 
@@ -33,10 +33,12 @@ export default async (routes: Array<IRouteConfig>, requestPath: string): Promise
     const { status, url } = context;
     const redirected = status >= 300 && status < 400;
 
+    const initialDataJson = JSON.stringify([...initialData]);
+
     return {
         jsx,
         status: status || 200,
-        initialData,
+        initialDataJson,
         redirectUrl: redirected ? url : null
     };
 };
