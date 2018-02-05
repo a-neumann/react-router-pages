@@ -15,7 +15,6 @@ interface IPageRouterServerRenderInfo {
 interface IPageRouterProps {
     routes: Array<IRouteConfig>;
     initialData?: Map<string, any>;
-    serverRenderInfo?: IPageRouterServerRenderInfo;
 }
 
 interface IPageRouterState {
