@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { Route, Switch, RouteComponentProps } from "react-router";
-import IRouteConfig from "./IRouteConfig";
+import IRouteConfig from "../interfaces/IRouteConfig";
 
 interface IChildRoutesProps {
     routes: Array<IRouteConfig>;

@@ -1,9 +1,9 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { Route, RouteProps, withRouter } from "react-router";
+import IRouteConfig from "../interfaces/IRouteConfig";
+import PageRoutingService from "../services/PageRoutingService";
 import ChildRoutes from "./ChildRoutes";
-import IRouteConfig from "./IRouteConfig";
-import IPagesDataLoader from "./InitialRouteDataLoader";
 
 type RouterLocation = RouteProps["location"];
 
@@ -29,12 +29,12 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         isNavigating: PropTypes.bool
     }
 
-    private pagesDataLoader: IPagesDataLoader;
+    private routingService: PageRoutingService;
 
     constructor(props: IPageRouterProps & RouteProps, context: any) {
         super(props, context);
 
-        this.pagesDataLoader = new IPagesDataLoader(props.routes);
+        this.routingService = new PageRoutingService(props.routes);
 
         this.state = {
             previousLocation: null,
@@ -78,7 +78,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
             this.setState({ previousLocation }, resolve);
         });
         
-        const pagesData = await this.pagesDataLoader.loadData(nextLocation.pathname);
+        const pagesData = await this.routingService.loadData(nextLocation.pathname);
 
         // clear previousLocation so the next screen renders
         this.setState({

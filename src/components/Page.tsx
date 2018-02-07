@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IPageComponentProps } from "./IPageComponent";
+import { IPageComponentProps } from "../interfaces/IPageComponent";
 import ChildRoutes from "./ChildRoutes";
 
 export default class Page<TData = any, TParams = any>
