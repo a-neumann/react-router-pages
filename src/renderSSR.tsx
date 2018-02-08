@@ -1,8 +1,9 @@
 import * as React from "react";
 import { StaticRouter } from "react-router";
-import PageRouter from "./PageRouter";
-import IRouteConfig from "./IRouteConfig";
-import InitialRouteDataLoader from "./InitialRouteDataLoader";
+import PageRouter from "./components/PageRouter";
+import IRouteConfig from "./interfaces/IRouteConfig";
+import IRoutesData from "./interfaces/IRoutesData";
+import RoutesLoader from "./services/RoutesLoader";
 
 export interface IRouteContext {
     status?: number;
@@ -12,32 +13,37 @@ export interface IRouteContext {
 export interface IPageRouterRenderResult {
     jsx: JSX.Element;
     status: number;
-    initialDataJson: string;
+    initialData: IRoutesData;
     redirectUrl?: string;
 }
 
 export default async (routes: Array<IRouteConfig>, requestPath: string): Promise<IPageRouterRenderResult> => {
 
-    const dataLoader = new InitialRouteDataLoader(routes);
-    const initialData = await dataLoader.loadData(requestPath);
+    const dataLoader = new RoutesLoader(routes);
+    const matchingRoutes = await dataLoader.prepareMatchingRoutes(requestPath);
+
+    const initialData: IRoutesData = {};
+    for (const route of matchingRoutes) {
+        if (route.data) {
+            initialData[route.id] = route.data;
+        }
+    }
     
     const context: IRouteContext = {};
 
     const jsx = (
         <StaticRouter location={requestPath} context={context}>
-            <PageRouter routes={routes} initialData={initialData} />
+            <PageRouter routes={routes} />
         </StaticRouter>
     );
 
     const { status, url } = context;
     const redirected = status >= 300 && status < 400;
 
-    const initialDataJson = JSON.stringify([...initialData]);
-
     return {
         jsx,
         status: status || 200,
-        initialDataJson,
+        initialData,
         redirectUrl: redirected ? url : null
     };
 };

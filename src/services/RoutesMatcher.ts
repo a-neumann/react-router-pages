@@ -1,10 +1,8 @@
-import { match, matchPath } from "react-router";
+import { match, matchPath, RouteProps } from "react-router";
 import IRouteConfig from "../interfaces/IRouteConfig";
 
-export interface IRouteConfigMatch {
-    route: IRouteConfig;
+export interface IRouteConfigMatch extends IRouteConfig {
     match: match<any>;
-    id: string;
 }
 
 export default class RoutesMatcher {
@@ -30,15 +28,14 @@ export default class RoutesMatcher {
             // is matchable -> get real match
             // is not matchable -> take previous match if available
             // no previous match -> create artificial match
-            const match = route.path ? matchPath(pathname, route) :
+            const match = route.path ? matchPath(pathname, route as RouteProps) :
                 lastMatch ? lastMatch.match :
                     this.createArtificialMatch(pathname);
     
             if (match) {
                 matches.push({
-                    route,
-                    match,
-                    id: route.id
+                    ...route,
+                    match
                 });
     
                 if (route.routes) {
