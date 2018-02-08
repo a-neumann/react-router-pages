@@ -33,10 +33,10 @@ export default class RoutesMatcher {
                     this.createArtificialMatch(pathname);
     
             if (match) {
-                matches.push({
-                    ...route,
-                    match
-                });
+                const routeConfigMatch = route as IRouteConfigMatch;
+                routeConfigMatch.match = match;
+
+                matches.push(routeConfigMatch);
     
                 if (route.routes) {
                     this.routesMatcher(route.routes, pathname, matches);
