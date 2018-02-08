@@ -1,17 +1,23 @@
 import IRouteConfig from "../../src/interfaces/IRouteConfig";
+import delay from "../delay";
 import RootPage from "./pages/RootPage";
 import HomePage from "./pages/HomePage";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import HelpPage from "./pages/HelpPage";
 
-const helpPageLoader = () => new Promise((res, rej) => {
-    console.log("loading HelpPage");
-    setTimeout(() => {
-        console.log("loaded HelpPage complete");
-        res(HelpPage);
-    }, 1000);
-});
+let HelpPageComponent: any = null;
+const helpPageLoader = async () => {
+
+    if (!HelpPageComponent) {
+                
+        await delay(500, 1000, "loading HelpPage");
+        
+        HelpPageComponent = HelpPage;
+    }
+
+    return HelpPageComponent;
+};
 
 export default [
     {

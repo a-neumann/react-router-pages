@@ -5,6 +5,7 @@ import { renderToString } from "react-dom/server";
 import { classToPlain } from "class-transformer";
 import routes from "./client/routes";
 import renderSSR from "../src/renderSSR";
+import delay from "./delay";
 import Todo from "./models/Todo";
 
 const app = express();
@@ -42,46 +43,53 @@ const todos = [
     new Todo("Add server CSS rendering", false, 3)
 ];
 
-app.get("/api/todos", (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.get("/api/todos", async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
-    setTimeout(() => {
-        const json = JSON.stringify(classToPlain(todos));
+    await delay(1000, 1500, "Api getting /todos");
+
+    const json = JSON.stringify(classToPlain(todos));
+    res.send(json);
+});
+
+app.get("/api/todos/:id", async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+
+    await delay(1000, 1500, "Api getting /todos/" + req.params.id);
+
+    const todo = todos.find(t => t.id === Number(req.params.id));
+
+    if (!todo) {
+        res.status(404);
+
+    } else {
+        const json = JSON.stringify(classToPlain(todo));
         res.send(json);
-    }, 2000);
+    }
 });
 
-app.get("/api/todos/:id", (req: express.Request, res: express.Response, next: express.NextFunction) => {
-
-    setTimeout(() => {
-        const todo = todos.find(t => t.id === Number(req.params.id));
-
-        if (!todo) {
-            res.status(404);
-    
-        } else {
-            const json = JSON.stringify(classToPlain(todo));
-            res.send(json);
-        }
-    }, 1500);
-});
-
-app.get("/*", (req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.get("/*", async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 
     if (req.url.startsWith("/public/")) {
         next();
     } else {
-        renderSSR(routes, req.url).then(ssr => {
 
-            const ssrHtml = renderToString(ssr.jsx);
-            const html = template(ssrHtml, JSON.stringify(ssr.initialData));
+        console.log("Requested router URL: " + req.url);
 
-            if (ssr.redirectUrl) {
-                res.redirect(ssr.status, ssr.redirectUrl);
+        const ssrResult = await renderSSR(routes, req.url);
+
+        if (!ssrResult) {
+            next();
+
+        } else {
+            const ssrHtml = renderToString(ssrResult.jsx);
+            const html = template(ssrHtml, JSON.stringify(ssrResult.initialData));
+    
+            if (ssrResult.redirectUrl) {
+                res.redirect(ssrResult.status, ssrResult.redirectUrl);
             } else {
-                res.status(ssr.status);
+                res.status(ssrResult.status);
                 res.send(html);
             }
-        });
+        }
     }
 });
 
