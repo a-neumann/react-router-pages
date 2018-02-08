@@ -22,6 +22,11 @@ export default async (routes: Array<IRouteConfig>, requestPath: string): Promise
     const dataLoader = new RoutesLoader(routes);
     const matchingRoutes = await dataLoader.prepareMatchingRoutes(requestPath);
 
+    if (matchingRoutes.length <= 0) {
+
+        return null;
+    }
+
     const initialData: IRoutesData = {};
     for (const route of matchingRoutes) {
         if (route.data) {
