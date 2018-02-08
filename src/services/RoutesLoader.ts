@@ -21,6 +21,11 @@ export default class RoutesLoader {
     async prepareMatchingRoutes(pathname: string): Promise<Array<IRouteConfig>> {
 
         const matches = this.routesMatcher.getMatches(pathname);
+
+        if (!matches.length) {
+            return [];
+        }
+
         const promises = matches.map(routeMatch => this.prepareRoute(routeMatch, routeMatch.match));
     
         return await Promise.all(promises);
