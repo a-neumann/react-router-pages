@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import Page from "../../../src/Page";
+import Page from "../../../src/components/Page";
 
 interface ITodoEditPageParams {
     id: string;
@@ -10,7 +10,7 @@ export default class TodoPage extends Page<null, ITodoEditPageParams> {
 
     render() {
 
-        const params = this.props.params;
+        const params = this.props.match.params;
 
         return (
             <section>

@@ -73,7 +73,7 @@ app.get("/*", (req: express.Request, res: express.Response, next: express.NextFu
         renderSSR(routes, req.url).then(ssr => {
 
             const ssrHtml = renderToString(ssr.jsx);
-            const html = template(ssrHtml, ssr.initialDataJson);
+            const html = template(ssrHtml, JSON.stringify(ssr.initialData));
 
             if (ssr.redirectUrl) {
                 res.redirect(ssr.status, ssr.redirectUrl);

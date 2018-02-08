@@ -1,4 +1,4 @@
-import IRouteConfig from "../../src/IRouteConfig";
+import IRouteConfig from "../../src/interfaces/IRouteConfig";
 import RootPage from "./pages/RootPage";
 import HomePage from "./pages/HomePage";
 import TodoPage from "./pages/TodoPage";

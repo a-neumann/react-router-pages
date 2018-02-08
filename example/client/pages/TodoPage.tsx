@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link, match } from "react-router-dom";
 import * as isomorphicFetch from "isomorphic-fetch";
 import { plainToClass } from "class-transformer";
-import Page from "../../../src/Page";
+import Page from "../../../src/components/Page";
 import Todo from "../../models/Todo";
 import common from "../../common";
 
@@ -30,7 +30,7 @@ export default class TodoPage extends Page<ITodoPageData, ITodoPageParams> {
 
     render() {
 
-        const todo = this.props.data ? this.props.data.todo : null;
+        const todo = this.props.route.data ? this.props.route.data.todo : null;
 
         return todo && (
             <section>
