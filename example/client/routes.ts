@@ -1,9 +1,23 @@
-import IRouteConfig from "../../src/IRouteConfig";
+import IRouteConfig from "../../src/interfaces/IRouteConfig";
+import delay from "../delay";
 import RootPage from "./pages/RootPage";
 import HomePage from "./pages/HomePage";
 import TodoPage from "./pages/TodoPage";
 import TodoEditPage from "./pages/TodoEditPage";
 import HelpPage from "./pages/HelpPage";
+
+let HelpPageComponent: any = null;
+const helpPageLoader = async () => {
+
+    if (!HelpPageComponent) {
+                
+        await delay(500, 1000, "loading HelpPage");
+        
+        HelpPageComponent = HelpPage;
+    }
+
+    return HelpPageComponent;
+};
 
 export default [
     {
@@ -26,7 +40,7 @@ export default [
             },
             {
                 path: "/help",
-                component: HelpPage
+                component: helpPageLoader
             }
         ]
     }
