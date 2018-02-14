@@ -5,7 +5,7 @@ import { renderToString } from "react-dom/server";
 import { classToPlain } from "class-transformer";
 import routes from "./client/routes";
 import renderSSR from "../src/renderSSR";
-import delay from "./delay";
+import delay from "../src/utils/delay";
 import Todo from "./models/Todo";
 
 const app = express();

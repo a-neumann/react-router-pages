@@ -1,4 +1,4 @@
-export default (ms = 0, untilRandom = 0, logMessage: string) => new Promise((res, rej) => {
+export default (ms: number, untilRandom = 0, logMessage: string = null) => new Promise((res, rej) => {
 
     let delayTime = ms;
 

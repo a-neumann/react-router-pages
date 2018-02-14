@@ -1,5 +1,5 @@
 import IRouteConfig from "../../src/interfaces/IRouteConfig";
-import delay from "../delay";
+import delay from "../../src/utils/delay";
 import RootPage from "./pages/RootPage";
 import HomePage from "./pages/HomePage";
 import TodoPage from "./pages/TodoPage";
