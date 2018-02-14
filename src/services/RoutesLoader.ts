@@ -31,16 +31,30 @@ export default class RoutesLoader {
         return await Promise.all(promises);
     }
 
-    async prepareRoute(route: IRouteConfig, match: match<any>) {
+    addDataToRoutes(data: IRoutesData) {
 
-        const component = await this.loadComponent(route);
-        route.component = component;        
-        route.data = await this.loadData(component, match);
+        const dataMap = new Map<string, any>();
+        Object.keys(data).forEach(key => dataMap.set(key, data[key]));
 
-        return route;
+        this.distributeDataMap(dataMap, this.routes);
     }
 
-    async loadComponent(route: IRouteConfig) {
+    private async loadData(component: IPageComponent, match: match<any>) {
+
+        const loadDataMethod = component.loadData;
+        if (loadDataMethod) {
+
+            return await loadDataMethod(match);
+        }
+
+        return null;
+    }
+
+    private async loadComponent(route: IRouteConfig) {
+
+        if (!route.component) {
+            throw new Error("Routes does not have a component!");
+        }
 
         if (isReactComponent(route.component)) {
 
@@ -52,23 +66,13 @@ export default class RoutesLoader {
         return await lazyComponent();
     }
 
-    async loadData(component: IPageComponent, match: match<any>) {
+    private async prepareRoute(route: IRouteConfig, match: match<any>) {
 
-        const loadDataMethod = component.loadData;
-        if (loadDataMethod) {
+        const component = await this.loadComponent(route);
+        route.component = component;        
+        route.data = await this.loadData(component, match);
 
-            return await loadDataMethod(match);
-        }
-
-        return null;
-    }
-
-    addDataToRoutes(data: IRoutesData) {
-
-        const dataMap = new Map<string, any>();
-        Object.keys(data).forEach(key => dataMap.set(key, data[key]));
-
-        this.distributeDataMap(dataMap, this.routes);
+        return route;
     }
 
     private distributeDataMap(dataMap: Map<string, any>, routes: Array<IRouteConfig>) {
