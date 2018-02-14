@@ -16,37 +16,53 @@ export default class RoutesMatcher {
 
     getMatches(pathname: string) {
 
-        return this.routesMatcher(this.routes, pathname, new Array<IRouteConfigMatch>());
+        const matches = new Array<IRouteConfigMatch>();
+
+        const exactMatched = this.matchedChildRoute(this.routes, pathname, matches);
+
+        return exactMatched ? matches : [];
     }
 
-    private routesMatcher(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>) {
+    private matchedChildRoute(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>): boolean {
 
-        routes.some((route, index) => {
-    
-            const lastMatch = !!matches.length && matches[matches.length - 1] || null;
-    
-            // is matchable -> get real match
-            // is not matchable -> take previous match if available
-            // no previous match -> create artificial match
-            const match = route.path ? matchPath(pathname, route as RouteProps) :
-                lastMatch ? lastMatch.match :
-                    this.createArtificialMatch(pathname);
-    
-            if (match) {
-                const routeConfigMatch = route as IRouteConfigMatch;
-                routeConfigMatch.match = match;
+        for (const route of routes) {
+            
+            if (route.path) {
 
-                matches.push(routeConfigMatch);
-    
-                if (route.routes) {
-                    this.routesMatcher(route.routes, pathname, matches);
+                const match = matchPath(pathname, route as RouteProps);
+             
+                if (match) {
+                    // found a matching route with a real path
+
+                    const routeMatch = route as IRouteConfigMatch;
+                    routeMatch.match = match;
+
+                    matches.push(routeMatch);
+
+                    if (!routeMatch.routes || !routeMatch.routes.length) {
+                        return true;
+                    }
+
+                    return this.matchedChildRoute(routeMatch.routes, pathname, matches);
                 }
+            } else {
+                // found a route without a path
+
+                const lastRouteMatch = !!matches.length && matches[matches.length - 1] || null;
+                const artificialRouteMatch = route as IRouteConfigMatch;
+                artificialRouteMatch.match = lastRouteMatch && lastRouteMatch.match || this.createArtificialMatch(pathname);
+
+                matches.push(artificialRouteMatch);
+
+                if (!artificialRouteMatch.routes || !artificialRouteMatch.routes.length) {
+                    return false;
+                }
+
+                return this.matchedChildRoute(artificialRouteMatch.routes, pathname, matches);
             }
-    
-            return !!match;
-        });
-    
-        return matches;
+        }
+
+        return false;
     }
 
     private createArtificialMatch(pathname: string): match<any> {
