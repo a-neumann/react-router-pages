@@ -2,7 +2,7 @@ import "jest";
 import RoutesMatcher from "./RoutesMatcher";
 import IRouteConfig from "../interfaces/IRouteConfig";
 
-const fakeRouteWithPath = (path: string, routes?: Array<IRouteConfig>, config: Partial<IRouteConfig> = {}) => {
+const fakeRoute = (path: string, routes?: Array<IRouteConfig>, config: Partial<IRouteConfig> = {}) => {
     return {
         component: null,
         path,
@@ -15,7 +15,7 @@ const fakeRouteWithPath = (path: string, routes?: Array<IRouteConfig>, config: P
 
 test("should match route", () => {
 
-    const testRoute = fakeRouteWithPath("/test");
+    const testRoute = fakeRoute("/test");
 
     const matcher = new RoutesMatcher([testRoute]);
     const matches = matcher.getMatches("/test");
@@ -26,7 +26,7 @@ test("should match route", () => {
 
 test("should can get params from match", () => {
 
-    const routeWithParams = fakeRouteWithPath("/withParams/:id");
+    const routeWithParams = fakeRoute("/withParams/:id");
 
     const matcher = new RoutesMatcher([routeWithParams]);
     const matches = matcher.getMatches("/withParams/123");
@@ -42,7 +42,7 @@ test("should can get params from match", () => {
 
 test("recognizes exact routes", () => {
 
-    const exactRoute = fakeRouteWithPath("/exact");
+    const exactRoute = fakeRoute("/exact");
     exactRoute.exact = true;
 
     const matcher = new RoutesMatcher([exactRoute]);
@@ -53,7 +53,7 @@ test("recognizes exact routes", () => {
 
 test("recognizes strict routes", () => {
 
-    const strictRoute = fakeRouteWithPath("/strict/");
+    const strictRoute = fakeRoute("/strict/");
     strictRoute.strict = true;
 
     const matcher = new RoutesMatcher([strictRoute]);
@@ -64,8 +64,8 @@ test("recognizes strict routes", () => {
 
 test("should match child routes", () => {
 
-    const rootRoute = fakeRouteWithPath("/root/", [
-        fakeRouteWithPath("/root/child")
+    const rootRoute = fakeRoute("/root/", [
+        fakeRoute("/root/child")
     ]);
 
     rootRoute.exact = false;    
@@ -80,9 +80,9 @@ test("should match child routes", () => {
 
 test("should match deep nested routes", () => {
 
-    const rootRoute = fakeRouteWithPath("/", [
-        fakeRouteWithPath("/child/:id", [
-            fakeRouteWithPath("/child/:id/grandchild")
+    const rootRoute = fakeRoute("/", [
+        fakeRoute("/child/:id", [
+            fakeRoute("/child/:id/grandchild")
         ])
     ]);
     
@@ -100,11 +100,11 @@ test("should match deep nested routes", () => {
 test("should match only first matching route of same level", () => {
 
     const routes = [
-        fakeRouteWithPath("/root", [
-            fakeRouteWithPath("/root/:id"),
-            fakeRouteWithPath("/root/123"),
+        fakeRoute("/root", [
+            fakeRoute("/root/:id"),
+            fakeRoute("/root/123"),
         ]),
-        fakeRouteWithPath("/", [], { exact: false })
+        fakeRoute("/", [], { exact: false })
     ];
 
     const matcher = new RoutesMatcher(routes);
@@ -117,7 +117,7 @@ test("should match only first matching route of same level", () => {
 
 test("should not match sole pathless route", () => {
 
-    const pathlessRoute = fakeRouteWithPath(null);
+    const pathlessRoute = fakeRoute(null);
 
     const matcher = new RoutesMatcher([pathlessRoute]);
     const matches = matcher.getMatches("/whatever");
@@ -127,8 +127,8 @@ test("should not match sole pathless route", () => {
 
 test("should not matching only pathless routes", () => {
 
-    const pathlessRoute = fakeRouteWithPath(null, [
-        fakeRouteWithPath(null)
+    const pathlessRoute = fakeRoute(null, [
+        fakeRoute(null)
     ]);
 
     const matcher = new RoutesMatcher([pathlessRoute]);
@@ -139,8 +139,8 @@ test("should not matching only pathless routes", () => {
 
 test("should match route inside pathless route", () => {
 
-    const pathlessRoute = fakeRouteWithPath(null, [
-        fakeRouteWithPath("/child")
+    const pathlessRoute = fakeRoute(null, [
+        fakeRoute("/child")
     ]);
 
     const matcher = new RoutesMatcher([pathlessRoute]);
@@ -153,8 +153,8 @@ test("should match route inside pathless route", () => {
 
 test("pathless route should have an artificial match", () => {
 
-    const pathlessRoute = fakeRouteWithPath(null, [
-        fakeRouteWithPath("/child")
+    const pathlessRoute = fakeRoute(null, [
+        fakeRoute("/child")
     ]);
 
     const matcher = new RoutesMatcher([pathlessRoute]);
@@ -169,14 +169,14 @@ test("pathless route should have an artificial match", () => {
 test("should match route inside nested pathless routes", () => {
 
     const routes = [
-        fakeRouteWithPath(null, [
-            fakeRouteWithPath("/child", [
-                fakeRouteWithPath(null, [
-                    fakeRouteWithPath(null, [
-                        fakeRouteWithPath("/child/final")
+        fakeRoute(null, [
+            fakeRoute("/child", [
+                fakeRoute(null, [
+                    fakeRoute(null, [
+                        fakeRoute("/child/final")
                     ])
                 ]),
-                fakeRouteWithPath("/child/:id")
+                fakeRoute("/child/:id")
             ])
         ])
     ];
