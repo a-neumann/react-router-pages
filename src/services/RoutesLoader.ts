@@ -69,8 +69,11 @@ export default class RoutesLoader {
     private async prepareRoute(route: IRouteConfig, match: match<any>) {
 
         const component = await this.loadComponent(route);
-        route.component = component;        
-        route.data = await this.loadData(component, match);
+        route.component = component;
+
+        if (component.loadData) {
+            route.data = await this.loadData(component, match);
+        }
 
         return route;
     }
