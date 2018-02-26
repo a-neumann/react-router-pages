@@ -1,4 +1,4 @@
-export default (ms: number, untilRandom = 0, logMessage: string = null) => new Promise((res, rej) => {
+export default (ms: number, untilRandom = 0, logMessage: string = null) => new Promise((resolve, reject) => {
 
     let delayTime = ms;
 
@@ -6,18 +6,13 @@ export default (ms: number, untilRandom = 0, logMessage: string = null) => new P
         delayTime = Math.floor(Math.random() * (untilRandom - ms + 1) + ms);
     }
 
-    if (logMessage) {
-        console.log(logMessage);
-    }
-
     setTimeout(() => {
 
-        const message = logMessage ?
-            `${logMessage} — done after ${delayTime} millisecond.` :
-            `…${delayTime} millisecond had passed.`;
+        if (logMessage) {
+            console.log(`${logMessage} — waited ${delayTime} milliseconds.`);
+        }
 
-        console.log(message);
+        resolve();
 
-        res();
     }, delayTime);
 });
