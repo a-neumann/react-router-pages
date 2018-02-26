@@ -16,6 +16,8 @@ interface IPageRouterServerRenderInfo {
 interface IPageRouterProps {
     routes: Array<IRouteConfig>;
     initialData?: IRoutesData;
+    onLocationChange?: (next: string, previous: string) => void;
+    onLocationChangeDone?: (next: string) => void;
 }
 
 interface IPageRouterState {
@@ -74,6 +76,10 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
 
     private async handleLocationChange(previousLocation: RouterLocation, nextLocation: RouterLocation) {
 
+        if (this.props.onLocationChange) {
+            this.props.onLocationChange(nextLocation.pathname, previousLocation.pathname);
+        }
+
         // save the location so we can render the old screen
         await new Promise((resolve, reject) => {
             this.setState({ previousLocation }, resolve);
@@ -83,6 +89,10 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
 
         // clear previousLocation so the next screen renders
         this.setState({ previousLocation: null });
+
+        if (this.props.onLocationChangeDone) {
+            this.props.onLocationChangeDone(nextLocation.pathname);
+        }
     }
 }
 
