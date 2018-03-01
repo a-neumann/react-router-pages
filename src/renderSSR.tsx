@@ -19,12 +19,16 @@ export interface IPageRouterRenderResult {
 
 export default async (routes: Array<IRouteConfig>, requestPath: string): Promise<IPageRouterRenderResult> => {
 
-    const dataLoader = new RoutesLoader(routes);
-    const matchingRoutes = await dataLoader.prepareMatchingRoutes(requestPath);
+    const routesLoader = new RoutesLoader(routes);
+    const matchingRoutes = await routesLoader.prepareMatchingRoutes(requestPath);
 
     if (matchingRoutes.length <= 0) {
 
-        return null;
+        return {
+            jsx: null,
+            status: 404,
+            initialData: null
+        };
     }
 
     const initialData: IRoutesData = {};
