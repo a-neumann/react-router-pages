@@ -4,7 +4,7 @@ import * as express from "express";
 import { renderToString } from "react-dom/server";
 import { classToPlain } from "class-transformer";
 import routes from "./client/routes";
-import renderSSR from "../src/renderSSR";
+import renderServer from "../src/renderServer";
 import delay from "../src/utils/delay";
 import Todo from "./models/Todo";
 
@@ -74,7 +74,7 @@ app.get("/*", async (req: express.Request, res: express.Response, next: express.
 
         console.log("Requested router URL: " + req.url);
 
-        const ssrResult = await renderSSR(routes, req.url);
+        const ssrResult = await renderServer(routes, req.url);
 
         if (!ssrResult) {
             next();
