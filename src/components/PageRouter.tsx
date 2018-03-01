@@ -8,11 +8,6 @@ import ChildRoutes from "./ChildRoutes";
 
 type RouterLocation = RouteProps["location"];
 
-interface IPageRouterServerRenderInfo {
-    location: string;
-    context: any;
-}
-
 interface IPageRouterProps {
     routes: Array<IRouteConfig>;
     initialData?: IRoutesData;
@@ -61,6 +56,18 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         }
     }
 
+    componentDidUpdate(prevProps: IPageRouterProps & RouteProps, prevState: IPageRouterState) {
+
+        const hasNavigated =
+            this.state.previousLocation === null &&
+            prevState.previousLocation !== null;
+        
+        if (hasNavigated && this.props.onLocationChangeDone) {
+
+            this.props.onLocationChangeDone(this.props.location.pathname);
+        }
+    }
+
     render() {
 
         const { location, routes } = this.props;
@@ -89,10 +96,6 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
 
         // clear previousLocation so the next screen renders
         this.setState({ previousLocation: null });
-
-        if (this.props.onLocationChangeDone) {
-            this.props.onLocationChangeDone(nextLocation.pathname);
-        }
     }
 }
 

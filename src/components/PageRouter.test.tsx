@@ -105,6 +105,8 @@ test("should prepare routes on navigate", async (done) => {
         expect(nextLocation).toBe("/test");
         expect(routes[0]).toHaveProperty("data");
 
+        expect(renderedRouter.render().find(".data").text()).toBe("test: testData");
+
         done();
     };
 
@@ -115,6 +117,8 @@ test("should prepare routes on navigate", async (done) => {
             <PageRouter routes={routes} onLocationChangeDone={locationChanged} />
         </Router>
     );
+
+    expect(renderedRouter.find(".data")).toHaveLength(0);
 
     memHistory.push("/test");
 });
