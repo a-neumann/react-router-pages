@@ -1,0 +1,41 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "dev-example",
+            "problemMatcher": [
+                {
+                    "owner": "custom",
+                    "pattern": {
+                        "regexp": "____________"
+                    },
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": "webpack:compile$",
+                        "endsPattern": "webpack:done$"
+                    }
+                }
+            ],
+            "isBackground": true
+        },
+        {
+            "type": "npm",
+            "script": "start-example",
+            "problemMatcher": [
+                {
+                    "owner": "custom",
+                    "pattern": {
+                        "regexp": "____________"
+                    },
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": "start-example",
+                        "endsPattern": "^Example app listening"
+                    }
+                }
+            ],
+            "isBackground": true
+        }
+    ]
+}

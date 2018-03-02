@@ -68,7 +68,15 @@ var clientConfig = merge(commonConfig, {
         new webpack.SourceMapDevToolPlugin({
             filename: "[file].map",
             exclude: ["vendor", "manifest"]
-        })
+        }),
+        function() {
+            this.plugin("compile", (stats) => {
+                console.log("webpack:compile");
+            });
+            this.plugin("done", (stats) => {
+                console.log("webpack:done");
+            });
+        }
     ]
 });
 
