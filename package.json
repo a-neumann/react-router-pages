@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "example": "cd example && ts-node index.ts",
-    "build-example": "rimraf example/public/* && webpack --config example/webpack.config.js"
+    "start-example": "cd example && ts-node index.ts",
+    "build-example": "rimraf example/public/* && webpack --config example/webpack.config.js",
+    "watch-example": "webpack --watch --config example/webpack.config.js --display=minimal",
+    "dev-example": "concurrently --kill-others -n server,webpack \"npm run start-example\" \"npm run watch-example\""
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",
+    "concurrently": "^3.5.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
