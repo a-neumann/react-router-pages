@@ -70,25 +70,26 @@ app.get("/*", async (req: express.Request, res: express.Response, next: express.
 
     if (req.url.startsWith("/public/")) {
         next();
+
     } else {
 
         console.log("Requested router URL: " + req.url);
 
         const ssrResult = await renderServer(routes, req.url);
 
-        if (!ssrResult) {
-            next();
+        if (ssrResult.status === 200) {
 
-        } else {
             const ssrHtml = renderToString(ssrResult.jsx);
             const html = template(ssrHtml, JSON.stringify(ssrResult.initialData));
-    
-            if (ssrResult.redirectUrl) {
-                res.redirect(ssrResult.status, ssrResult.redirectUrl);
-            } else {
-                res.status(ssrResult.status);
-                res.send(html);
-            }
+
+            res.status(ssrResult.status);
+            res.send(html);
+
+        } else if (ssrResult.redirectUrl) {
+            res.redirect(ssrResult.status, ssrResult.redirectUrl);
+
+        } else {
+            next();
         }
     }
 });
