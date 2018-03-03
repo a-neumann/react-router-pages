@@ -1,3 +1,5 @@
+// tslint:disable:no-console
+
 export default (ms: number, untilRandom = 0, logMessage: string = null) => new Promise((resolve, reject) => {
 
     let delayTime = ms;

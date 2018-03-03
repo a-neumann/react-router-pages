@@ -1,10 +1,12 @@
 import * as React from "react";
-import { Link, match } from "react-router-dom";
-import * as isomorphicFetch from "isomorphic-fetch";
+
 import { plainToClass } from "class-transformer";
+import * as isomorphicFetch from "isomorphic-fetch";
+import { Link, match as Match } from "react-router-dom";
+
 import Page from "../../../src/components/Page";
-import Todo from "../../models/Todo";
 import common from "../../common";
+import Todo from "../../models/Todo";
 
 interface ITodoPageParams {
     id: string;
@@ -16,7 +18,7 @@ interface ITodoPageData {
 
 export default class TodoPage extends Page<ITodoPageData, ITodoPageParams> {
 
-    static async loadData(match: match<ITodoPageParams>): Promise<ITodoPageData> {
+    public static async loadData(match: Match<ITodoPageParams>): Promise<ITodoPageData> {
 
         const response = await isomorphicFetch(common.apiURL + "/api/todos/" + match.params.id);
         if (response.ok) {
@@ -28,7 +30,7 @@ export default class TodoPage extends Page<ITodoPageData, ITodoPageParams> {
         return null;
     }
 
-    render() {
+    public render() {
 
         const todo = this.props.route.data ? this.props.route.data.todo : null;
 

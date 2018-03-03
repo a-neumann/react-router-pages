@@ -1,8 +1,10 @@
 import * as React from "react";
+
 import * as PropTypes from "prop-types";
-import { Route, Switch, RouteComponentProps } from "react-router";
-import IRouteConfig from "../interfaces/IRouteConfig";
+import { Route, RouteComponentProps, Switch } from "react-router";
+
 import IPageComponent from "../interfaces/IPageComponent";
+import IRouteConfig from "../interfaces/IRouteConfig";
 import isReactComponent from "../utils/isReactComponent";
 
 interface IChildRoutesProps {
@@ -11,11 +13,11 @@ interface IChildRoutesProps {
 
 export default class ChildRoutes extends React.Component<IChildRoutesProps> {
 
-    static contextTypes = {
-        isNavigating: PropTypes.bool  
+    public static contextTypes = {
+        isNavigating: PropTypes.bool
     };
 
-    render() {
+    public render() {
 
         const isNavigating = !!this.context.isNavigating;
 

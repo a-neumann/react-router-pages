@@ -1,18 +1,23 @@
+// tslint:disable:max-classes-per-file
+
 import * as React from "react";
-import { match } from "react-router";
-import { IPageComponentProps } from "../interfaces/IPageComponent";
+
+import { match as Match } from "react-router";
+
 import ChildRoutes from "../components/ChildRoutes";
+import { IPageComponentProps } from "../interfaces/IPageComponent";
 import delay from "../utils/delay";
 
 export class TestPage extends React.Component<IPageComponentProps<any, any>> {
 
-    render() {
+    public render() {
         return <h1>test-page</h1>;
     }
 }
 
 export class TestPageWithChildren extends React.Component<IPageComponentProps<any, any>> {
-    render() {
+
+    public render() {
         return (
             <div>
                 <h1>test-page with children</h1>
@@ -28,9 +33,9 @@ interface ITestPageData {
     test: string;
 }
 
-export class DataLoadingTestPage extends React.Component<IPageComponentProps<ITestPageData, any>> {
-    
-    static async loadData(match: match<any>): Promise<ITestPageData> {
+export class DataLoadingTestPage extends React.Component<IPageComponentProps<any, any>> {
+
+    public static async loadData(match: Match<any>): Promise<ITestPageData> {
 
         await delay(1);
 
@@ -39,7 +44,7 @@ export class DataLoadingTestPage extends React.Component<IPageComponentProps<ITe
         return { test: "testData" };
     }
 
-    render() {
+    public render() {
         return (
             <div>
                 <h1>data-loading-test-page</h1>
@@ -60,7 +65,7 @@ export const asyncComponentLoader = (componentClass: React.ComponentClass<IPageC
         const className = (componentClass).toString().match(/^class\s([A-z0-9_]+)\s/);
 
         asyncComponentLoaderMock(className[1]);
-        
+
         return componentClass;
     };
 };

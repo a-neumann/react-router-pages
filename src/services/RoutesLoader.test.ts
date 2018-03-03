@@ -1,9 +1,15 @@
 import "jest";
-import RoutesLoader from "./RoutesLoader";
-import IRouteConfig from "../interfaces/IRouteConfig";
-import { loadedPageDataMock, asyncComponentLoaderMock, TestPage, DataLoadingTestPage, asyncComponentLoader } from "../test-utils/pageComponents";
-import { expectToHaveAsyncLoadingComponent, expectToHaveNormalComponent } from "../test-utils/routeAssertions";
 
+import IRouteConfig from "../interfaces/IRouteConfig";
+import {
+    asyncComponentLoader,
+    asyncComponentLoaderMock,
+    DataLoadingTestPage,
+    loadedPageDataMock,
+    TestPage
+} from "../test-utils/pageComponents";
+import { expectToHaveAsyncLoadingComponent, expectToHaveNormalComponent } from "../test-utils/routeAssertions";
+import RoutesLoader from "./RoutesLoader";
 
 beforeEach(() => {
     loadedPageDataMock.mockClear();
@@ -13,12 +19,12 @@ beforeEach(() => {
 test("should load simple route", async (done) => {
 
     const testRoute: IRouteConfig = {
-        component: TestPage,
-        path: "/test"
+        path: "/test",
+        component: TestPage
     };
 
     const loader = new RoutesLoader([testRoute]);
-    
+
     expect(loader.routes).toContain(testRoute);
 
     const loadedRoutes = await loader.prepareMatchingRoutes("/test");
@@ -32,20 +38,20 @@ test("should load simple route", async (done) => {
 test("should add correct ids to routes", () => {
 
     const testRoute: IRouteConfig = {
-        component: TestPage,
         path: "/test",
+        component: TestPage,
         routes: [
             {
-                component: TestPage,
-                path: "/childOne"
+                path: "/childOne",
+                component: TestPage
             },
             {
-                component: TestPage,
                 path: "/childTwo",
+                component: TestPage,
                 routes: [
                     {
-                        component: TestPage,
-                        path: "/grandChildOne"
+                        path: "/grandChildOne",
+                        component: TestPage
                     }
                 ]
             }
@@ -53,7 +59,7 @@ test("should add correct ids to routes", () => {
     };
 
     const loader = new RoutesLoader([testRoute]);
-    
+
     expect(loader.routes).toContain(testRoute);
     expect(loader.routes[0]).toHaveProperty("id", "0");
     expect(loader.routes[0].routes[0]).toHaveProperty("id", "0-0");
@@ -64,12 +70,12 @@ test("should add correct ids to routes", () => {
 test("should load data for component of route", async (done) => {
 
     const testRoute: IRouteConfig = {
-        component: DataLoadingTestPage,
-        path: "/test/:paramOne/:paramTwo"
+        path: "/test/:paramOne/:paramTwo",
+        component: DataLoadingTestPage
     };
 
     const loader = new RoutesLoader([testRoute]);
-    
+
     expect(loader.routes).toContain(testRoute);
     expect(testRoute).not.toHaveProperty("data");
     expect(loadedPageDataMock.mock.calls).toHaveLength(0);
@@ -89,17 +95,17 @@ test("should load data for component of route", async (done) => {
 test("should add data to routes", async (done) => {
 
     const testRoute: IRouteConfig = {
-        component: TestPage,
         path: "/test/:paramOne",
-        id: "parentRoute",
+        component: TestPage,
         routes: [
             {
-                component: DataLoadingTestPage,
                 path: "/test/:paramOne/:paramTwo",
+                component: DataLoadingTestPage,
                 id: "childRoute",
                 data: { test: "should be replaced" }
             }
-        ]
+        ],
+        id: "parentRoute"
     };
 
     const loader = new RoutesLoader([testRoute]);
@@ -111,13 +117,13 @@ test("should add data to routes", async (done) => {
         parentRoute: parentTestData,
         childRoute: childTestData
     });
-    
+
     expect(loader.routes).toContain(testRoute);
     expect(loadedPageDataMock.mock.calls).toHaveLength(0);
     expect(testRoute).toHaveProperty("data", parentTestData);
     expect(testRoute.routes[0]).toHaveProperty("data", childTestData);
 
-    const loadedRoutes = await loader.prepareMatchingRoutes("/test/11/22");
+    await loader.prepareMatchingRoutes("/test/11/22");
 
     expect(loadedPageDataMock.mock.calls).toHaveLength(1);
     expect(testRoute).toHaveProperty("data", parentTestData);
@@ -130,12 +136,12 @@ test("should add data to routes", async (done) => {
 test("should load async loading component of route", async (done) => {
 
     const testRoute: IRouteConfig = {
-        component: asyncComponentLoader(TestPage),
-        path: "/test"
+        path: "/test",
+        component: asyncComponentLoader(TestPage)
     };
 
     const loader = new RoutesLoader([testRoute]);
-    
+
     expect(loader.routes).toContain(testRoute);
     expectToHaveAsyncLoadingComponent(testRoute);
     expect(asyncComponentLoaderMock.mock.calls).toHaveLength(0);
@@ -153,12 +159,12 @@ test("should load async loading component of route", async (done) => {
 test("should load data after loading component", async (done) => {
 
     const testRoute: IRouteConfig = {
-        component: asyncComponentLoader(DataLoadingTestPage),
-        path: "/test"
+        path: "/test",
+        component: asyncComponentLoader(DataLoadingTestPage)
     };
 
     const loader = new RoutesLoader([testRoute]);
-    
+
     expect(loader.routes).toContain(testRoute);
     expectToHaveAsyncLoadingComponent(testRoute);
     expect(testRoute).not.toHaveProperty("data");

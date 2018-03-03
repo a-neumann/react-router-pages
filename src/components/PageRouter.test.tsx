@@ -1,12 +1,13 @@
 import "jest";
 import * as React from "react";
+
 import { mount } from "enzyme";
-import { StaticRouter, MemoryRouter, Router } from "react-router";
 import { createMemoryHistory } from "history";
-import PageRouter from "./PageRouter";
-import { IPageComponentProps } from "../interfaces/IPageComponent";
+import { Router, StaticRouter } from "react-router";
+
 import IRouteConfig from "../interfaces/IRouteConfig";
-import { TestPage, TestPageWithChildren, DataLoadingTestPage } from "../test-utils/pageComponents";
+import { DataLoadingTestPage, TestPage, TestPageWithChildren } from "../test-utils/pageComponents";
+import PageRouter from "./PageRouter";
 
 test("should render route", () => {
 

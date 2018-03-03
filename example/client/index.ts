@@ -1,5 +1,5 @@
-import * as React from "react";
 import { hydrate, render } from "react-dom";
+
 import renderClient from "../../src/renderClient";
 import routes from "./routes";
 

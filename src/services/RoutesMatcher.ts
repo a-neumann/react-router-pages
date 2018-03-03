@@ -1,8 +1,8 @@
-import { match, matchPath, RouteProps } from "react-router";
+import { match as Match, matchPath, RouteProps } from "react-router";
 import IRouteConfig from "../interfaces/IRouteConfig";
 
 export interface IRouteConfigMatch extends IRouteConfig {
-    match: match<any>;
+    match: Match<any>;
 }
 
 export default class RoutesMatcher {
@@ -14,7 +14,7 @@ export default class RoutesMatcher {
         this.routes = routes;
     }
 
-    getMatches(pathname: string) {
+    public getMatches(pathname: string) {
 
         const matches = new Array<IRouteConfigMatch>();
 
@@ -23,14 +23,14 @@ export default class RoutesMatcher {
         return exactMatched ? matches : [];
     }
 
-    private matchedChildRoute(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>): boolean {
+    private matchedChildRoute(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>) {
 
         for (const route of routes) {
-            
+
             if (route.path) {
 
                 const match = matchPath(pathname, route as RouteProps);
-             
+
                 if (match) {
                     // found a matching route with a real path
 
@@ -50,7 +50,10 @@ export default class RoutesMatcher {
 
                 const lastRouteMatch = !!matches.length && matches[matches.length - 1] || null;
                 const artificialRouteMatch = route as IRouteConfigMatch;
-                artificialRouteMatch.match = lastRouteMatch && lastRouteMatch.match || this.createArtificialMatch(pathname);
+                artificialRouteMatch.match =
+                    lastRouteMatch &&
+                    lastRouteMatch.match ||
+                    this.createArtificialMatch(pathname);
 
                 matches.push(artificialRouteMatch);
 
@@ -65,13 +68,13 @@ export default class RoutesMatcher {
         return false;
     }
 
-    private createArtificialMatch(pathname: string): match<any> {
+    private createArtificialMatch(pathname: string): Match<any> {
 
         return {
-            path: "/",
-            url: "/",
             params: {},
-            isExact: pathname === "/"
+            isExact: pathname === "/",
+            path: "/",
+            url: "/"
         };
     }
 }

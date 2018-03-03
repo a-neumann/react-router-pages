@@ -1,11 +1,13 @@
-import * as path from "path";
-import { Url as URL } from "url";
-import * as express from "express";
-import { renderToString } from "react-dom/server";
+// tslint:disable:no-console
+
 import { classToPlain } from "class-transformer";
-import routes from "./client/routes";
+import * as express from "express";
+import * as path from "path";
+import { renderToString } from "react-dom/server";
+
 import renderServer from "../src/renderServer";
 import delay from "../src/utils/delay";
+import routes from "./client/routes";
 import Todo from "./models/Todo";
 
 const app = express();
@@ -18,7 +20,9 @@ const template = (rendered, initialDataJson) => {
             <style>
                 section { border: 1px solid black; margin: 10px; position: relative }
                 header { background: teal; }
-                .loadingOverlay { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.3) }
+                .loadingOverlay {
+                    position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.3);
+                }
             </style>
             <script id="initialData" type="application/json">
                 ${initialDataJson}

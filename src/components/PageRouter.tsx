@@ -1,6 +1,8 @@
 import * as React from "react";
+
 import * as PropTypes from "prop-types";
 import { Route, RouteProps, withRouter } from "react-router";
+
 import IRouteConfig from "../interfaces/IRouteConfig";
 import IRoutesData from "../interfaces/IRoutesData";
 import RoutesLoader from "../services/RoutesLoader";
@@ -21,9 +23,9 @@ interface IPageRouterState {
 
 class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRouterState> {
 
-    static childContextTypes = {
+    public static childContextTypes = {
         isNavigating: PropTypes.bool
-    }
+    };
 
     private routesLoader: RoutesLoader;
 
@@ -41,14 +43,14 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         };
     }
 
-    getChildContext() {
+    public getChildContext() {
 
         return {
             isNavigating: !!this.state.previousLocation
         };
     }
 
-    componentWillReceiveProps(nextProps: IPageRouterProps & RouteProps) {
+    public componentWillReceiveProps(nextProps: IPageRouterProps & RouteProps) {
 
         const navigated = nextProps.location !== this.props.location;
         if (navigated) {
@@ -56,19 +58,19 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         }
     }
 
-    componentDidUpdate(prevProps: IPageRouterProps & RouteProps, prevState: IPageRouterState) {
+    public componentDidUpdate(prevProps: IPageRouterProps & RouteProps, prevState: IPageRouterState) {
 
         const hasNavigated =
             this.state.previousLocation === null &&
             prevState.previousLocation !== null;
-        
+
         if (hasNavigated && this.props.onLocationChangeDone) {
 
             this.props.onLocationChangeDone(this.props.location.pathname);
         }
     }
 
-    render() {
+    public render() {
 
         const { location, routes } = this.props;
         const { previousLocation } = this.state;
@@ -78,7 +80,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
                 location={previousLocation || location}
                 render={() => <ChildRoutes routes={routes} />}
             />
-        )
+        );
     }
 
     private async handleLocationChange(previousLocation: RouterLocation, nextLocation: RouterLocation) {
@@ -91,7 +93,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         await new Promise((resolve, reject) => {
             this.setState({ previousLocation }, resolve);
         });
-        
+
         await this.routesLoader.prepareMatchingRoutes(nextLocation.pathname);
 
         // clear previousLocation so the next screen renders

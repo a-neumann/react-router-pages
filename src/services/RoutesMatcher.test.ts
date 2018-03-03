@@ -1,12 +1,13 @@
 import "jest";
-import RoutesMatcher from "./RoutesMatcher";
+
 import IRouteConfig from "../interfaces/IRouteConfig";
+import RoutesMatcher from "./RoutesMatcher";
 
 const fakeRoute = (path: string, routes?: Array<IRouteConfig>, config: Partial<IRouteConfig> = {}) => {
     return {
-        component: null,
         path,
         exact: false,
+        component: null,
         strict: false,
         routes,
         ...config
@@ -68,7 +69,7 @@ test("should match child routes", () => {
         fakeRoute("/root/child")
     ]);
 
-    rootRoute.exact = false;    
+    rootRoute.exact = false;
 
     const matcher = new RoutesMatcher([rootRoute]);
     const matches = matcher.getMatches("/root/child/");
@@ -85,7 +86,7 @@ test("should match deep nested routes", () => {
             fakeRoute("/child/:id/grandchild")
         ])
     ]);
-    
+
     rootRoute.exact = false;
 
     const matcher = new RoutesMatcher([rootRoute]);
@@ -102,7 +103,7 @@ test("should match only first matching route of same level", () => {
     const routes = [
         fakeRoute("/root", [
             fakeRoute("/root/:id"),
-            fakeRoute("/root/123"),
+            fakeRoute("/root/123")
         ]),
         fakeRoute("/", [], { exact: false })
     ];

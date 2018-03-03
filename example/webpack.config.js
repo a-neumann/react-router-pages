@@ -43,7 +43,7 @@ var commonConfig = {
 
 var clientConfig = merge(commonConfig, {
     entry: {
-        index: "./example/client/index.tsx"
+        index: "./example/client/index.ts"
     },
     output: {
         filename: "[name].js"

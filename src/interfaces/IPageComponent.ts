@@ -1,13 +1,15 @@
 import * as React from "react";
-import { RouteComponentProps, match } from "react-router";
+
+import { match as Match, RouteComponentProps } from "react-router";
+
 import IRouteConfig from "./IRouteConfig";
 
-export interface IPageComponentProps<TPageData, TParams> extends RouteComponentProps<TParams> {
-    route: IRouteConfig;
+export interface IPageComponentProps<TData, TParams> extends RouteComponentProps<TParams> {
+    route: IRouteConfig<TData>;
     isNavigating?: boolean;
 }
 
-export default interface IPageComponent<TPageData = any, TParams = any>
-    extends React.ComponentClass<IPageComponentProps<TPageData, TParams>> {
-    loadData?: (match: match<TParams>) => Promise<TPageData>
+export default interface IPageComponent<TData = any, TParams = any>
+    extends React.ComponentClass<IPageComponentProps<TData, TParams>> {
+    loadData?: (match: Match<TParams>) => Promise<TData>;
 }

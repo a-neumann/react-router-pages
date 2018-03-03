@@ -1,7 +1,7 @@
 export default class Todo {
-    id: number;
-    name: string;
-    isDone: boolean;
+    public readonly id: number;
+    public name: string;
+    public isDone: boolean;
 
     constructor(name: string, isDone = false, id?: number) {
         this.name = name;

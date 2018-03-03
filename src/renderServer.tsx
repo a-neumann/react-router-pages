@@ -1,5 +1,7 @@
 import * as React from "react";
+
 import { StaticRouter } from "react-router";
+
 import PageRouter from "./components/PageRouter";
 import IRouteConfig from "./interfaces/IRouteConfig";
 import IRoutesData from "./interfaces/IRoutesData";
@@ -37,7 +39,7 @@ export default async (routes: Array<IRouteConfig>, requestPath: string): Promise
             initialData[route.id] = route.data;
         }
     }
-    
+
     const context: IRouteContext = {};
 
     const jsx = (
