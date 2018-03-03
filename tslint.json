@@ -1,0 +1,15 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "arrow-parens": false,
+        "array-type": [true, "generic"],
+        "trailing-comma": [true, { "multiline": "never", "singleline": "never" }],
+        "no-unused-variable": true,
+        "object-literal-sort-keys": false // wanted "shorthand-first" but not with alphabetical order 😞
+    },
+    "rulesDirectory": []
+}
