@@ -23,7 +23,8 @@ export default class RoutesMatcher {
         return exactMatched ? matches : [];
     }
 
-    private matchedChildRoute(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>) {
+    private matchedChildRoute(routes: Array<IRouteConfig>, pathname: string, matches: Array<IRouteConfigMatch>)
+        : boolean {
 
         for (const route of routes) {
 

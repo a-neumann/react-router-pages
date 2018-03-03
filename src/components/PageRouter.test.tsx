@@ -101,7 +101,7 @@ test("should prepare routes on navigate", async (done) => {
         }
     ];
 
-    const locationChanged = (nextLocation) => {
+    const locationChanged = (nextLocation: string) => {
 
         expect(nextLocation).toBe("/test");
         expect(routes[0]).toHaveProperty("data");

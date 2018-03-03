@@ -29,7 +29,7 @@ export class TestPageWithChildren extends React.Component<IPageComponentProps<an
 
 export const loadedPageDataMock = jest.fn();
 
-interface ITestPageData {
+export interface ITestPageData {
     test: string;
 }
 
@@ -64,7 +64,7 @@ export const asyncComponentLoader = (componentClass: React.ComponentClass<IPageC
 
         const className = (componentClass).toString().match(/^class\s([A-z0-9_]+)\s/);
 
-        asyncComponentLoaderMock(className[1]);
+        asyncComponentLoaderMock(className ? className[1] : null);
 
         return componentClass;
     };

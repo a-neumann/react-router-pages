@@ -9,7 +9,14 @@
     "build-example": "rimraf example/public/* && webpack --config example/webpack.config.js",
     "watch-example": "webpack --watch --config example/webpack.config.js --display=minimal",
     "dev-example": "concurrently --kill-others -n server,webpack \"npm run start-example\" \"npm run watch-example\"",
-    "lint": "tslint -p ."
+    "lint": "tslint -p .",
+    "build": "rimraf lib && tsc -p .",
+    "publish:pre": "npm run lint && npm run test && npm run build",
+    "publish:post": "npm publish && git push --follow-tags",
+    "release:prerelease": "npm run publish:pre && npm version prerelease && npm run publish:post",
+    "release:patch": "npm run publish:pre && npm version patch && npm run publish:post",
+    "release:minor": "npm run publish:pre && npm version minor && npm run publish:post",
+    "release:major": "npm run publish:pre && npm version major && npm run publish:post"
   },
   "author": "",
   "license": "ISC",

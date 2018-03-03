@@ -7,8 +7,8 @@ import IPageComponent from "../interfaces/IPageComponent";
 import IRouteConfig from "../interfaces/IRouteConfig";
 import isReactComponent from "../utils/isReactComponent";
 
-interface IChildRoutesProps {
-    routes: Array<IRouteConfig>;
+export interface IChildRoutesProps {
+    routes?: Array<IRouteConfig>;
 }
 
 export default class ChildRoutes extends React.Component<IChildRoutesProps> {
@@ -39,7 +39,7 @@ export default class ChildRoutes extends React.Component<IChildRoutesProps> {
     private childRouteRenderer(route: IRouteConfig, isNavigating: boolean) {
 
         if (!isReactComponent(route.component)) {
-            return null;
+            throw new Error("Cannot render route with missing component.");
         }
 
         const routeComponent = route.component as IPageComponent;

@@ -1,27 +1,27 @@
 import * as React from "react";
 
 import * as PropTypes from "prop-types";
-import { Route, RouteProps, withRouter } from "react-router";
+import { Route, RouteComponentProps, withRouter } from "react-router";
 
 import IRouteConfig from "../interfaces/IRouteConfig";
 import IRoutesData from "../interfaces/IRoutesData";
 import RoutesLoader from "../services/RoutesLoader";
 import ChildRoutes from "./ChildRoutes";
 
-type RouterLocation = RouteProps["location"];
+export type RouterLocation = RouteComponentProps<any>["location"];
 
-interface IPageRouterProps {
+export interface IPageRouterProps extends RouteComponentProps<any> {
     routes: Array<IRouteConfig>;
     initialData?: IRoutesData;
-    onLocationChange?: (next: string, previous: string) => void;
+    onLocationChange?: (next: string, previous?: string) => void;
     onLocationChangeDone?: (next: string) => void;
 }
 
-interface IPageRouterState {
-    previousLocation: RouterLocation;
+export interface IPageRouterState {
+    previousLocation: RouterLocation | null;
 }
 
-class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRouterState> {
+export class InternalPageRouter extends React.Component<IPageRouterProps, IPageRouterState> {
 
     public static childContextTypes = {
         isNavigating: PropTypes.bool
@@ -29,7 +29,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
 
     private routesLoader: RoutesLoader;
 
-    constructor(props: IPageRouterProps & RouteProps, context: any) {
+    constructor(props: IPageRouterProps & RouteComponentProps<any>, context: any) {
         super(props, context);
 
         this.routesLoader = new RoutesLoader(props.routes);
@@ -50,7 +50,7 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         };
     }
 
-    public componentWillReceiveProps(nextProps: IPageRouterProps & RouteProps) {
+    public componentWillReceiveProps(nextProps: IPageRouterProps) {
 
         const navigated = nextProps.location !== this.props.location;
         if (navigated) {
@@ -58,15 +58,17 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
         }
     }
 
-    public componentDidUpdate(prevProps: IPageRouterProps & RouteProps, prevState: IPageRouterState) {
+    public componentDidUpdate(prevProps: IPageRouterProps, prevState: IPageRouterState) {
 
         const hasNavigated =
             this.state.previousLocation === null &&
             prevState.previousLocation !== null;
 
-        if (hasNavigated && this.props.onLocationChangeDone) {
+        const { onLocationChangeDone, location } = this.props;
 
-            this.props.onLocationChangeDone(this.props.location.pathname);
+        if (hasNavigated && onLocationChangeDone && location) {
+
+            onLocationChangeDone(location.pathname);
         }
     }
 
@@ -85,20 +87,22 @@ class PageRouter extends React.Component<IPageRouterProps & RouteProps, IPageRou
 
     private async handleLocationChange(previousLocation: RouterLocation, nextLocation: RouterLocation) {
 
-        if (this.props.onLocationChange) {
-            this.props.onLocationChange(nextLocation.pathname, previousLocation.pathname);
+        if (nextLocation) {
+            if (this.props.onLocationChange) {
+                this.props.onLocationChange(nextLocation.pathname, previousLocation!.pathname);
+            }
+
+            // save the location so we can render the old screen
+            await new Promise((resolve, reject) => {
+                this.setState({ previousLocation }, resolve);
+            });
+
+            await this.routesLoader.prepareMatchingRoutes(nextLocation.pathname);
+
+            // clear previousLocation so the next screen renders
+            this.setState({ previousLocation: null });
         }
-
-        // save the location so we can render the old screen
-        await new Promise((resolve, reject) => {
-            this.setState({ previousLocation }, resolve);
-        });
-
-        await this.routesLoader.prepareMatchingRoutes(nextLocation.pathname);
-
-        // clear previousLocation so the next screen renders
-        this.setState({ previousLocation: null });
     }
 }
 
-export default withRouter(PageRouter as any) as typeof PageRouter;
+export default withRouter(InternalPageRouter);

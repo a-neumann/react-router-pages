@@ -1,13 +1,23 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "moduleResolution": "node",
+        "target": "es2015",
         "jsx": "react",
-        "types": [
-            "node", "dom"
-        ]
+        "outDir": "./lib",
+        "strict": true,
+        "strictNullChecks": false,
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "importHelpers": false,
+        "sourceMap": true,
+        "declaration": true,
+        "skipLibCheck": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "lib",
+        "example"
     ]
 }
