@@ -1,8 +1,8 @@
 {
   "name": "react-router-pages",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Data pre-loading universal config based router, built on top of React Router",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest",
     "start-example": "cd example && ts-node index.ts",
@@ -18,7 +18,7 @@
     "release:minor": "npm run publish:pre && npm version minor && npm run publish:post",
     "release:major": "npm run publish:pre && npm version major && npm run publish:post"
   },
-  "author": "",
+  "author": "Andreas Neumann (https://github.com/a-neumann)",
   "license": "ISC",
   "dependencies": {
     "@types/prop-types": "^15.5.2",
