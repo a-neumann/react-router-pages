@@ -40,11 +40,11 @@ export default class RoutesMatcher {
 
                     matches.push(routeMatch);
 
-                    if (!routeMatch.routes || !routeMatch.routes.length) {
-                        return true;
+                    if (routeMatch.routes && routeMatch.routes.length) {
+                        this.matchedChildRoute(routeMatch.routes, pathname, matches);
                     }
 
-                    return this.matchedChildRoute(routeMatch.routes, pathname, matches);
+                    return true;
                 }
             } else {
                 // found a route without a path

@@ -98,6 +98,24 @@ test("should match deep nested routes", () => {
     expect(matches[2].path).toBe("/child/:id/grandchild");
 });
 
+test("should match route with non-matching children", () => {
+
+    const rootRoute = fakeRoute("/", [
+        fakeRoute("/child/:id", [
+            fakeRoute("/child/:id/grandchild")
+        ])
+    ]);
+
+    rootRoute.exact = false;
+
+    const matcher = new RoutesMatcher([rootRoute]);
+    const matches = matcher.getMatches("/child/123");
+
+    expect(matches).toHaveLength(2);
+    expect(matches[0].path).toBe("/");
+    expect(matches[1].path).toBe("/child/:id");
+});
+
 test("should match only first matching route of same level", () => {
 
     const routes = [
