@@ -5,14 +5,13 @@ import { Route, RouteComponentProps, withRouter } from "react-router";
 
 import IRouteConfig from "../interfaces/IRouteConfig";
 import IRoutesData from "../interfaces/IRoutesData";
-import RoutesLoader from "../services/RoutesLoader";
+import { IRoutesLoader } from "../services/RoutesLoader";
 import ChildRoutes from "./ChildRoutes";
 
 export type RouterLocation = RouteComponentProps<any>["location"];
 
 export interface IPageRouterProps extends RouteComponentProps<any> {
-    routes: Array<IRouteConfig>;
-    initialData?: IRoutesData;
+    routesLoader: IRoutesLoader;
     onLocationChange?: (next: string, previous?: string) => void;
     onLocationChangeDone?: (next: string) => void;
 }
@@ -27,21 +26,9 @@ export class InternalPageRouter extends React.Component<IPageRouterProps, IPageR
         isNavigating: PropTypes.bool
     };
 
-    private routesLoader: RoutesLoader;
-
-    constructor(props: IPageRouterProps & RouteComponentProps<any>, context: any) {
-        super(props, context);
-
-        this.routesLoader = new RoutesLoader(props.routes);
-
-        if (props.initialData) {
-            this.routesLoader.addDataToRoutes(props.initialData);
-        }
-
-        this.state = {
-            previousLocation: null
-        };
-    }
+    public state = {
+        previousLocation: null
+    };
 
     public getChildContext() {
 
@@ -74,13 +61,13 @@ export class InternalPageRouter extends React.Component<IPageRouterProps, IPageR
 
     public render() {
 
-        const { location, routes } = this.props;
+        const { location, routesLoader } = this.props;
         const { previousLocation } = this.state;
 
         return (
             <Route
                 location={previousLocation || location}
-                render={() => <ChildRoutes routes={routes} />}
+                render={() => <ChildRoutes routes={routesLoader.routes} />}
             />
         );
     }
@@ -97,7 +84,7 @@ export class InternalPageRouter extends React.Component<IPageRouterProps, IPageR
                 this.setState({ previousLocation }, resolve);
             });
 
-            await this.routesLoader.prepareMatchingRoutes(nextLocation.pathname);
+            await this.props.routesLoader.prepareMatchingRoutes(nextLocation.pathname);
 
             // clear previousLocation so the next screen renders
             this.setState({ previousLocation: null });

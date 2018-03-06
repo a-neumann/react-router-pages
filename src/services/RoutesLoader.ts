@@ -6,7 +6,12 @@ import IRoutesData from "../interfaces/IRoutesData";
 import isReactComponent from "../utils/isReactComponent";
 import RoutesMatcher from "./RoutesMatcher";
 
-export default class RoutesLoader {
+export interface IRoutesLoader {
+    readonly routes: Array<IRouteConfig>;
+    prepareMatchingRoutes(pathname: string): Promise<any>;
+}
+
+export default class RoutesLoader implements IRoutesLoader {
 
     public readonly routes: Array<IRouteConfig>;
 
@@ -18,7 +23,7 @@ export default class RoutesLoader {
         this.routesMatcher = new RoutesMatcher(this.routes);
     }
 
-    public async prepareMatchingRoutes(pathname: string): Promise<Array<IRouteConfig>> {
+    public async prepareMatchingRoutes(pathname: string, loadData = true): Promise<Array<IRouteConfig>> {
 
         const matches = this.routesMatcher.getMatches(pathname);
 
@@ -26,7 +31,7 @@ export default class RoutesLoader {
             return [];
         }
 
-        const promises = matches.map(routeMatch => this.prepareRoute(routeMatch, routeMatch.match));
+        const promises = matches.map(routeMatch => this.prepareRoute(routeMatch, routeMatch.match, loadData));
 
         return await Promise.all(promises);
     }
@@ -66,12 +71,12 @@ export default class RoutesLoader {
         return await lazyComponent();
     }
 
-    private async prepareRoute(route: IRouteConfig, match: Match<any>) {
+    private async prepareRoute(route: IRouteConfig, match: Match<any>, loadData: boolean) {
 
         const component = await this.loadComponent(route);
         route.component = component;
 
-        if (component.loadData) {
+        if (component.loadData && loadData) {
             route.data = await this.loadData(component, match);
         }
 

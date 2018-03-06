@@ -19,12 +19,12 @@ const initReact = (jsx: JSX.Element, rootElement: Element): Promise<void> => {
     });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     const initialDataScript = document.getElementById("initialData");
     const initialData = initialDataScript ? JSON.parse(initialDataScript.innerHTML) : null;
 
-    const jsx = renderClient(routes, initialData);
+    const jsx = await renderClient(routes, initialData);
 
     initReact(jsx, document.getElementById("app"));
 });

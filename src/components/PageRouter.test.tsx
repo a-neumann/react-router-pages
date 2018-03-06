@@ -6,8 +6,16 @@ import { createMemoryHistory } from "history";
 import { Router, StaticRouter } from "react-router";
 
 import IRouteConfig from "../interfaces/IRouteConfig";
+import RoutesLoader, { IRoutesLoader } from "../services/RoutesLoader";
 import { DataLoadingTestPage, TestPage, TestPageWithChildren } from "../test-utils/pageComponents";
 import PageRouter from "./PageRouter";
+
+const fakeRoutesLoader = (routes: Array<IRouteConfig>): IRoutesLoader => {
+    return {
+        routes,
+        prepareMatchingRoutes: () => Promise.resolve()
+    };
+};
 
 test("should render route", () => {
 
@@ -20,7 +28,7 @@ test("should render route", () => {
 
     let renderedRouter = mount(
         <StaticRouter location="/test" context={{}}>
-            <PageRouter routes={routes} />
+            <PageRouter routesLoader={fakeRoutesLoader(routes)} />
         </StaticRouter>
     );
 
@@ -28,7 +36,7 @@ test("should render route", () => {
 
     renderedRouter = mount(
         <StaticRouter location="/whatever" context={{}}>
-            <PageRouter routes={routes} />
+            <PageRouter routesLoader={fakeRoutesLoader(routes)} />
         </StaticRouter>
     );
 
@@ -52,7 +60,7 @@ test("should render child routes", () => {
 
     const renderedWithParentPath = mount(
         <StaticRouter location="/parent/" context={{}}>
-            <PageRouter routes={routes} />
+            <PageRouter routesLoader={fakeRoutesLoader(routes)} />
         </StaticRouter>
     );
 
@@ -61,7 +69,7 @@ test("should render child routes", () => {
 
     const renderedWithChildPath = mount(
         <StaticRouter location="/parent/child/" context={{}}>
-            <PageRouter routes={routes} />
+            <PageRouter routesLoader={fakeRoutesLoader(routes)} />
         </StaticRouter>
     );
 
@@ -79,13 +87,14 @@ test("should render routes with initial data", () => {
         }
     ];
 
-    const initialData = {
+    const routesLoader = new RoutesLoader(routes);
+    routesLoader.addDataToRoutes({
         testRoute: { test: "initialData" }
-    };
+    });
 
     const renderedRouter = mount(
         <StaticRouter location="/test" context={{}}>
-            <PageRouter routes={routes} initialData={initialData} />
+            <PageRouter routesLoader={routesLoader} />
         </StaticRouter>
     );
 
@@ -113,9 +122,11 @@ test("should prepare routes on navigate", async (done) => {
 
     const memHistory = createMemoryHistory({ initialEntries: ["/whatever"], initialIndex: 0 });
 
+    const routesLoader = new RoutesLoader(routes);
+
     const renderedRouter = mount(
         <Router history={memHistory}>
-            <PageRouter routes={routes} onLocationChangeDone={locationChanged} />
+            <PageRouter routesLoader={routesLoader} onLocationChangeDone={locationChanged} />
         </Router>
     );
 

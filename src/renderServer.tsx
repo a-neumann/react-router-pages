@@ -44,7 +44,7 @@ export default async (routes: Array<IRouteConfig>, requestPath: string): Promise
 
     const jsx = (
         <StaticRouter location={requestPath} context={context}>
-            <PageRouter routes={routes} />
+            <PageRouter routesLoader={routesLoader} />
         </StaticRouter>
     );
 
