@@ -17,8 +17,7 @@
             "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
             "args": ["example/index.ts"],
             "cwd": "${workspaceRoot}",
-            "protocol": "inspector",
-            "preLaunchTask": "npm: build-example"
+            "protocol": "inspector"
         },
         {
             "name": "launch example (Chrome)",
