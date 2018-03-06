@@ -39,7 +39,7 @@ export default class ChildRoutes extends React.Component<IChildRoutesProps> {
     private childRouteRenderer(route: IRouteConfig, isNavigating: boolean) {
 
         if (!isReactComponent(route.component)) {
-            throw new Error("Cannot render route with missing component.");
+            return null;
         }
 
         const routeComponent = route.component as IPageComponent;
