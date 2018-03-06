@@ -19,9 +19,7 @@ var commonConfig = {
                 exclude: /node_modules/,
                 loader: "awesome-typescript-loader",
                 options: {
-                    configFileName: "./example/tsconfig.json",
-                    useBabel: true,
-                    useCache: true,
+                    configFileName: "./example/tsconfig.webpack.json",
                     sourceMap: true
                 }
             }
@@ -46,7 +44,8 @@ var clientConfig = merge(commonConfig, {
         index: "./example/client/index.ts"
     },
     output: {
-        filename: "[name].js"
+        filename: "[name].js",
+        chunkFilename: "[name].chunk.js"
     },
     target: "web",
     plugins: [
