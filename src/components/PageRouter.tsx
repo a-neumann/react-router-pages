@@ -3,8 +3,6 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import { Route, RouteComponentProps, withRouter } from "react-router";
 
-import IRouteConfig from "../interfaces/IRouteConfig";
-import IRoutesData from "../interfaces/IRoutesData";
 import { IRoutesLoader } from "../services/RoutesLoader";
 import ChildRoutes from "./ChildRoutes";
 
@@ -26,9 +24,13 @@ export class InternalPageRouter extends React.Component<IPageRouterProps, IPageR
         isNavigating: PropTypes.bool
     };
 
-    public state = {
-        previousLocation: null
-    };
+    constructor(props: IPageRouterProps) {
+        super(props);
+
+        this.state = {
+            previousLocation: null
+        };
+    }
 
     public getChildContext() {
 
