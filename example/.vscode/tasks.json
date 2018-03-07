@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "npm",
-            "script": "dev-example",
+            "script": "dev",
             "problemMatcher": [
                 {
                     "owner": "custom",
@@ -21,7 +21,7 @@
         },
         {
             "type": "npm",
-            "script": "start-example",
+            "script": "start",
             "problemMatcher": [
                 {
                     "owner": "custom",

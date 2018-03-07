@@ -11,32 +11,32 @@
             "protocol": "inspector"
         },
         {
-            "name": "launch example (Node)",
+            "name": "launch (Node)",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/ts-node/dist/_bin.js",
-            "args": ["example/index.ts"],
+            "args": ["index.ts"],
             "cwd": "${workspaceRoot}",
             "protocol": "inspector"
         },
         {
-            "name": "launch example (Chrome)",
+            "name": "launch (Chrome)",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}/example",
+            "webRoot": "${workspaceRoot}",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
                 "webpack:///*": "${workspaceRoot}/*"
             },
-            "preLaunchTask": "npm: start-example"
+            "preLaunchTask": "npm: start"
         },
         {
-            "name": "launch example (Firefox)",
+            "name": "launch (Firefox)",
             "type": "firefox",
             "request": "launch",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}/example",
+            "webRoot": "${workspaceRoot}",
             "skipFiles": [
                 "node_modules/**"
             ],
@@ -45,13 +45,13 @@
                     "url": "webpack:///", "path": "${workspaceRoot}/" 
                 }
             ],
-            "preLaunchTask": "npm: start-example"
+            "preLaunchTask": "npm: start"
         },
         {
-            "name": "dev example (Chrome)",
+            "name": "dev (Chrome)",
             "type": "chrome",
             "request": "launch",
-            "webRoot": "${workspaceRoot}/example",
+            "webRoot": "${workspaceRoot}",
             "url": "http://localhost:3000", 
             "userDataDir": "${workspaceRoot}/.vscode/chrome",
             "smartStep": true,
@@ -63,14 +63,14 @@
             "sourceMapPathOverrides": {
                 "webpack:///*": "${workspaceFolder}/*"
             },
-            "preLaunchTask": "npm: dev-example"
+            "preLaunchTask": "npm: dev"
         },
         {
-            "name": "dev example (Firefox)",
+            "name": "dev (Firefox)",
             "type": "firefox",
             "request": "launch",
             "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}/example",
+            "webRoot": "${workspaceRoot}",
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
                 "node_modules/**"
@@ -80,7 +80,7 @@
                     "url": "webpack:///", "path": "${workspaceRoot}/" 
                 }
             ],
-            "preLaunchTask": "npm: dev-example"
+            "preLaunchTask": "npm: dev"
         },
     ]//,
     // "compounds": [
