@@ -19,7 +19,7 @@ var commonConfig = {
                 exclude: /node_modules/,
                 loader: "awesome-typescript-loader",
                 options: {
-                    configFileName: "./example/tsconfig.webpack.json",
+                    configFileName: "./tsconfig.webpack.json",
                     sourceMap: true
                 }
             }
@@ -29,7 +29,7 @@ var commonConfig = {
 
 // var ssrConfig = merge(commonConfig, {
 //     entry: {
-//         app: "./example/client/App.tsx"
+//         app: "./client/App.tsx"
 //     },
 //     output: {
 //         filename: "index-ssr.js",
@@ -41,7 +41,7 @@ var commonConfig = {
 
 var clientConfig = merge(commonConfig, {
     entry: {
-        index: "./example/client/index.ts"
+        index: "./client/index.ts"
     },
     output: {
         filename: "[name].js",
