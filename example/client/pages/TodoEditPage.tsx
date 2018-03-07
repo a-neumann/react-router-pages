@@ -1,8 +1,6 @@
 import * as React from "react";
-
 import { Link } from "react-router-dom";
-
-import Page from "../../../src/components/Page";
+import { Page } from "react-router-pages";
 
 interface ITodoEditPageParams {
     id: string;

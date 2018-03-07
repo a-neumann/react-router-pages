@@ -4,11 +4,11 @@ import { classToPlain } from "class-transformer";
 import * as express from "express";
 import * as path from "path";
 import { renderToString } from "react-dom/server";
+import { renderServer } from "react-router-pages";
 
-import renderServer from "../src/renderServer";
-import delay from "../src/utils/delay";
 import routes from "./client/routes";
 import Todo from "./models/Todo";
+import delay from "./utils/delay";
 
 const app = express();
 

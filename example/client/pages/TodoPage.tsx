@@ -3,8 +3,8 @@ import * as React from "react";
 import { plainToClass } from "class-transformer";
 import * as isomorphicFetch from "isomorphic-fetch";
 import { Link, match as Match } from "react-router-dom";
+import { Page } from "react-router-pages";
 
-import Page from "../../../src/components/Page";
 import common from "../../common";
 import Todo from "../../models/Todo";
 

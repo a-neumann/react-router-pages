@@ -21,6 +21,7 @@
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-router-pages": "file:..",
     "ts-node": "^4.1.0",
     "typescript": "^2.6.2"
   },

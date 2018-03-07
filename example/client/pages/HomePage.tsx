@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import Page from "../../../src/components/Page";
+import { Page } from "react-router-pages";
 
 export default class HomePage extends Page {
 

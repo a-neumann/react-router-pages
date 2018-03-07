@@ -7,6 +7,7 @@
   },
   "description": "Data pre-loading universal config based router, built on top of React Router",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "tslint -p .",

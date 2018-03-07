@@ -1,4 +1,5 @@
-import IRouteConfig from "../../src/interfaces/IRouteConfig";
+import { IRouteConfig } from "react-router-pages";
+
 import HomePage from "./pages/HomePage";
 import RootPage from "./pages/RootPage";
 

@@ -1,6 +1,6 @@
 import { hydrate, render } from "react-dom";
+import { renderClient } from "react-router-pages";
 
-import renderClient from "../../src/renderClient";
 import routes from "./routes";
 
 const initReact = (jsx: JSX.Element, rootElement: Element): Promise<void> => {
